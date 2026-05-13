@@ -1,10 +1,10 @@
 package com.projects.assignments.controller;
+import com.projects.assignments.entity.User;
 import com.projects.assignments.service.ServiceSecureDbConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/secure")
@@ -17,22 +17,25 @@ public class DbController {
     public ResponseEntity<?> login(@RequestParam String username,
                                    @RequestParam String password) {
 
-        Map<String, Object> user = serviceSecureDbConnection.authenticateUser(username, password);
+        User user = serviceSecureDbConnection.authenticateUser(username, password);
 
         if (user == null) {
             return ResponseEntity.status(401).body("Invalid credentials");
         }
+
+        user.setPassword(null); // Never return password in response
         return ResponseEntity.ok(user);
     }
-
     @GetMapping("/user/{id}")
     public ResponseEntity<?> getUser(@PathVariable Long id) {
 
-        Map<String, Object> user = serviceSecureDbConnection.getUserById(id);
+        User user = serviceSecureDbConnection.getUserById(id);
 
         if (user == null) {
             return ResponseEntity.status(404).body("User not found");
         }
+
+        user.setPassword(null); // Never return password in response
         return ResponseEntity.ok(user);
     }
 }

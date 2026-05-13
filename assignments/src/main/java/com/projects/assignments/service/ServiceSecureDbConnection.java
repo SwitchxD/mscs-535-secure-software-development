@@ -1,43 +1,31 @@
 package com.projects.assignments.service;
 
+import com.projects.assignments.entity.User;
+import com.projects.assignments.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ServiceSecureDbConnection {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private UserRepository userRepository;
 
     /**
-     * Authenticates user securely using parameterized queries.
+     * Authenticates a user by username and password.
      */
-    public Map<String, Object> authenticateUser(String username, String password) {
-        String sql = "SELECT id, username, email FROM users WHERE username = ? AND password = ?";
-
-        List<Map<String, Object>> results = jdbcTemplate.queryForList(sql, username, password);
-
-        if (results.isEmpty()) {
-            return null;
-        }
-        return results.getFirst();
+    public User authenticateUser(String username, String password) {
+        Optional<User> user = userRepository.findByUsernameAndPassword(username, password);
+        return user.orElse(null);
     }
 
     /**
-     * Looks up a user by ID using a parameterized query.
+     * Retrieves a user by their primary key ID.
      */
-    public Map<String, Object> getUserById(Long id) {
-        String sql = "SELECT id, username, email FROM users WHERE id = ?";
-
-        List<Map<String, Object>> results = jdbcTemplate.queryForList(sql, id);
-
-        if (results.isEmpty()) {
-            return null;
-        }
-        return results.getFirst();
+    public User getUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElse(null);
     }
 }
