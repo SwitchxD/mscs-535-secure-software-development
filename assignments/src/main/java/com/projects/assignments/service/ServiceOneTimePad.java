@@ -13,9 +13,7 @@ public class ServiceOneTimePad {
     private static final String PLAINTEXT = "MY NAME IS UNKNOWN";
     private static final SecureRandom random = new SecureRandom();
     private static final int LETTERCOUNT = PLAINTEXT.length();
-
     OneTimePadDto oneTimePadDto = new OneTimePadDto();
-
     private int[] generatedKey;
 
     // Encryption method returning cipher text

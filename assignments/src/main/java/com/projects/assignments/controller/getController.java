@@ -27,7 +27,7 @@ public class getController {
     @GetMapping(path = "/oneTimePad")
     public OneTimePadDto oneTimePad (){
         OneTimePadDto response = serviceOneTimePad.encrypt();
-        log.info("Test controller run success");
+        log.info("OneTimePad service run success");
         return response;
     }
 }
