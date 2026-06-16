@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head><title>Login</title></head>
+<body>
+
+  <!-- Input fields for username and password -->
+  <input type="text"     id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+
+  <!-- Button that triggers the login function when clicked -->
+  <button onclick="login()">Login</button>
+
+  <!-- Empty paragraph to display the server response message -->
+  <p id="msg"></p>
+
+  <script>
+    async function login() {
+      // Get the values the user typed in
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      // Send a POST request to db.php with the username and password
+      const res = await fetch('db.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `username=${username}&password=${password}`  // Form data in the request body
+      });
+
+      // Display the response text from PHP on the page
+      document.getElementById('msg').textContent = await res.text();
+    }
+  </script>
+
+</body>
+</html>
